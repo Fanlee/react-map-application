@@ -1,11 +1,11 @@
-import React from 'react'
+import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Form, Input, Button, Checkbox } from 'antd'
 import AuthWrapper from '@component/auth-wrapper/auth-wrapper'
 import { _login } from '@redux/user.redux'
 import useAuthValida from '@hook/useAuthValida'
-import styles from './style.module.sass'
+import * as styles from './style.module.sass'
 
 const Login = ({ form }) => {
   const dispatch = useDispatch()
