@@ -17,7 +17,27 @@
     "importHelpers": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "paths": {
+      "@container/*": [
+        "src/container/*"
+      ],
+      "@component/*": [
+        "src/component/*"
+      ],
+      "@common/*": [
+        "src/container/*"
+      ],
+      "@redux/*": [
+        "src/redux/*"
+      ],
+      "@hook/*": [
+        "src/hook/*"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ]
+    }
   },
   "exclude": [
     "node_modules",
