@@ -1,19 +1,18 @@
-import { enc, AES, mode } from 'crypto-js'
+import { enc, AES, mode } from 'crypto-ts'
 
 /**
  * 用户名、密码加密方法
  * @param {string} text 
  */
-export function encrypt(text) {
+export function encrypt(text: string) {
   const prous = AES.encrypt
   const parse = enc.Utf8.parse
-  let key = parse('dituhui123456!@#')
+  const key = parse('dituhui123456!@#')
   //加密向量，保持与key一致
-  var iv = key
-  var encrypted = prous(text, key, {
+  const iv = key
+  const encrypted = prous(text, key, {
     iv: iv,
     mode: mode.CBC
-  })
-  encrypted = encrypted.toString()
+  }).toString()
   return encrypted
 }

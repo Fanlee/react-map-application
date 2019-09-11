@@ -1,4 +1,4 @@
-import React from 'react'
+import * as React from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { Form, Input, Button, Row, Col } from 'antd'
@@ -9,23 +9,23 @@ import useAuthValida from '@hook/useAuthValida'
 import useSendMSG from '@hook/useSendMSG'
 import styles from './style.module.sass'
 
-const Forget = ({ form }) => {
+const Forget = (props: any) => {
   const dispatch = useDispatch()
-  const resetPW = useSelector(state => state.user.resetPW)
+  const resetPW = useSelector((state: any) => state.user.resetPW)
 
-  const { getFieldDecorator } = form
+  const { getFieldDecorator } = props.form
   const {
     validatePhoneNumber,
     compareToFirstPassword,
     validateToNextPassword,
     validateCode,
-  } = useAuthValida(form)
+  } = useAuthValida(props.form)
 
-  const { isSend, setSend, sendMsg } = useSendMSG(form)
+  const { isSend, setSend, sendMsg } = useSendMSG(props.form)
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: any) => {
     e.preventDefault()
-    form.validateFields((err, values) => {
+    props.form.validateFields((err: any, values: any) => {
       if (!err) {
         dispatch(_resetPassword(values))
       }

@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react'
+import * as React from 'react'
 import { Button } from 'antd'
 import styles from './style.module.sass'
 
-const CountDown = props => {
-  const [count, setCount] = useState(props.num)
+const { useState, useEffect } = React
+
+interface Iprops {
+  num: number;
+  countEnd(): void
+}
+
+const CountDown = (props: Iprops) => {
+  const [count, setCount] = useState<number>(props.num)
   useEffect(() => {
     const timer = setInterval(() => {
       if (count > 1) {

@@ -3,8 +3,11 @@ import { commit } from '@common/ts/server'
  * 用户相关接口
  */
 
+export interface Params {
+  [p: string]: any
+}
 // 登录接口
-export function login(params) {
+export function login(params: Params) {
   return commit({
     url: '/saas/platform/user/login',
     method: 'POST',
@@ -13,7 +16,7 @@ export function login(params) {
 }
 
 // 验证手机号是否存在
-export function isExsitEmailOrUserNameOrTel(params) {
+export function isExsitEmailOrUserNameOrTel(params: Params) {
   return commit({
     url: '/saas/platform/user/isExsitEmailOrUserNameOrTel',
     params
@@ -21,7 +24,7 @@ export function isExsitEmailOrUserNameOrTel(params) {
 }
 
 // 发送验证码
-export function sendMessage(params) {
+export function sendMessage(params: Params) {
   return commit({
     url: '/saas/platform/phone/sendMessage',
     method: 'POST',
@@ -30,7 +33,7 @@ export function sendMessage(params) {
 }
 
 // 验证验证码是否正确
-export function verificatCode(params) {
+export function verificatCode(params: Params) {
   return commit({
     url: '/saas/platform/phone/verificatCode',
     method: 'POST',
@@ -39,7 +42,7 @@ export function verificatCode(params) {
 }
 
 // 注册
-export function regist(params) {
+export function regist(params: Params) {
   return commit({
     url: '/saas/platform/team/regist',
     method: 'POST',
@@ -48,7 +51,7 @@ export function regist(params) {
 }
 
 // 重置密码
-export function resetPassword(params) {
+export function resetPassword(params: Params) {
   return commit({
     url: '/saas/platform/user/resetPassword',
     method: 'POST',

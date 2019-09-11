@@ -1,17 +1,23 @@
 import axios from 'axios'
 // import { createBrowserHistory } from 'history'
 
-const param = data => {
+export interface Data {
+  [p: string]: any
+}
+const param = (data: Data): string => {
   let url = ''
   for (const k of Object.keys(data)) {
-    let value = data[k] !== undefined ? data[k] : ''
+    const value = data[k] !== undefined ? data[k] : ''
     url += `&${k}=${encodeURIComponent(value)}`
   }
   return url ? url.substring(1) : ''
 }
 
+export interface AxiosConfig extends Data {
+  url: string
+}
 // 拦截请求
-axios.interceptors.request.use(config => {
+axios.interceptors.request.use((config: AxiosConfig): AxiosConfig => {
   const t = new Date().getTime()
   const data = {
     t
@@ -21,7 +27,7 @@ axios.interceptors.request.use(config => {
 })
 
 // 拦截响应
-axios.interceptors.response.use(config => {
+axios.interceptors.response.use((config): any => {
   // const history = createBrowserHistory()
   const { data } = config
   if (data.code === 'S001') {
@@ -35,9 +41,16 @@ axios.interceptors.response.use(config => {
   }
 })
 
+export type Method = 'GET' | 'POST'
+
+export interface CommitConfig extends Data, AxiosConfig {
+  method?: Method
+  params: any
+}
+
 // 封装公共的调用后端接口的方法
-export const commit = ({ url, method = 'GET', params = {} }) => {
-  const p = method === 'GET' ? 'params' : 'data'
-  const config = { method, url, [p]: params }
+export const commit = (c: CommitConfig) => {
+  const p = c.method === 'POST' ? 'data' : 'params'
+  const config = { method: c.method, url: c.url, [p]: c.params }
   return axios(config)
 }

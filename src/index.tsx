@@ -26,10 +26,12 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 
-declare const window: Window
+
 interface Window {
   [p: string]: any
 }
+
+declare const window: Window
 
 const store = createStore(persistedReducer, compose(
   applyMiddleware(thunk),

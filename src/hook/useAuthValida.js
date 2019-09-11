@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-// import { createBrowserHistory } from 'history'
+import { createBrowserHistory } from 'history'
 import {
   _isExsitEmailOrUserNameOrTel,
   _verificatCode,
@@ -14,15 +14,15 @@ const useAuthValida = (form) => {
     if (value && !reg.test(value)) {
       callback('手机号码格式不正确！')
     } else {
-      // const history = createBrowserHistory()
-/*       const { pathname } = history.location
+      const history = createBrowserHistory()
+      const { pathname } = history.location
       try {
         await dispatch(_isExsitEmailOrUserNameOrTel(value))
         pathname === '/register' ? callback('手机号码已存在！') : callback()
 
       } catch (err) {
         pathname === '/register' ? callback() : callback('手机号码未注册！')
-      } */
+      }
 
     }
   }

@@ -1,7 +1,12 @@
-import React from 'react'
+import * as React from 'react'
 import styles from './style.module.sass'
 
-const AuthWrapper = ({ children, text }) => {
+interface Iprops {
+  children: any,
+  text: string
+}
+
+const AuthWrapper = (props: Iprops) => {
   return (
     <div className={styles.wrapper}>
       <div className={styles.box}>
@@ -10,9 +15,9 @@ const AuthWrapper = ({ children, text }) => {
         </div>
         <div className={styles.content}>
           <div className={styles.title}>
-            <div className={styles.name}>{text}</div>
+            <div className={styles.name}>{props.text}</div>
           </div>
-          {children}
+          {props.children}
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import * as React from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Form, Modal, Input, Button, Checkbox, message, Row, Col } from 'antd'
@@ -9,27 +9,29 @@ import useAuthValida from '@hook/useAuthValida'
 import useSendMSG from '@hook/useSendMSG'
 import styles from './style.module.sass'
 
-const Register = ({ form }) => {
+const { useState } = React
+
+const Register = (props: any) => {
   // 阅读服务条款
-  const [read, setRead] = useState(true)
+  const [read, setRead] = useState<boolean>(true)
   // 显示服务条款
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState<boolean>(false)
 
   const dispatch = useDispatch()
-  const { getFieldDecorator } = form
+  const { getFieldDecorator } = props.form
   const {
     validatePhoneNumber,
     compareToFirstPassword,
     validateToNextPassword,
     validateCode,
     validateUserName
-  } = useAuthValida(form)
+  } = useAuthValida(props.form)
 
-  const { isSend, setSend, sendMsg } = useSendMSG(form)
+  const { isSend, setSend, sendMsg } = useSendMSG(props.form)
 
-  const handleSubmit = e => {
+  const handleSubmit = (e: any) => {
     e.preventDefault()
-    form.validateFields((err, values) => {
+    props.form.validateFields((err: any, values: any): any => {
       if (!err) {
         if (!read) {
           return message.warning('请先阅读服务条款！')
