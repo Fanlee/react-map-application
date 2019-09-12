@@ -7,13 +7,13 @@ import { _login } from '@redux/user.redux'
 import useAuthValida from '@hook/useAuthValida'
 import * as styles from './style.module.sass'
 
-const Login = (props: any) => {
+const Login = ({form}: {form:any}) => {
   const dispatch = useDispatch()
-  const { getFieldDecorator } = props.form
-  const { compareToFirstPassword } = useAuthValida(props.form)
+  const { getFieldDecorator } = form
+  const { compareToFirstPassword } = useAuthValida(form)
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    props.form.validateFields((err: any, values: any) => {
+    form.validateFields((err: any, values: any) => {
       if (!err) {
         dispatch(_login(values))
       }

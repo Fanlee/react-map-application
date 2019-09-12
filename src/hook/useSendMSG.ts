@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { _sendMessage } from '@redux/user.redux'
 
-const useSendMSG = (form) => {
+const useSendMSG = (form:any) => {
   // 是否已经发送短信
   const [isSend, setSend] = useState(false)
   const dispatch = useDispatch()

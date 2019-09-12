@@ -11,27 +11,27 @@ import styles from './style.module.sass'
 
 const { useState } = React
 
-const Register = (props: any) => {
+const Register = ({form}: { form: any }) => {
   // 阅读服务条款
-  const [read, setRead] = useState<boolean>(true)
+  const [read, setRead] = useState(true)
   // 显示服务条款
-  const [visible, setVisible] = useState<boolean>(false)
+  const [visible, setVisible] = useState(false)
 
   const dispatch = useDispatch()
-  const { getFieldDecorator } = props.form
+  const { getFieldDecorator } = form
   const {
     validatePhoneNumber,
     compareToFirstPassword,
     validateToNextPassword,
     validateCode,
     validateUserName
-  } = useAuthValida(props.form)
+  } = useAuthValida(form)
 
-  const { isSend, setSend, sendMsg } = useSendMSG(props.form)
+  const { isSend, setSend, sendMsg } = useSendMSG(form)
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    props.form.validateFields((err: any, values: any): any => {
+    form.validateFields((err: any, values: any): any => {
       if (!err) {
         if (!read) {
           return message.warning('请先阅读服务条款！')

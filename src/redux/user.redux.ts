@@ -9,44 +9,69 @@ import {
   resetPassword
 } from '@api/user'
 
-const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-const REGIST_SUCCESS = 'REGIST_SUCCESS'
-const RESET_PW = 'RESET_PW'
+enum ActionType {
+  LOGIN_SUCCESS = 'LOGIN_SUCCESS',
+  REGIST_SUCCESS = 'REGIST_SUCCESS',
+  RESET_PW = 'RESET_PW'
+}
 
 const initState = {
   userInfo: {},
   resetPW: false
 }
 
-export function user(state = initState, action) {
+interface InitState {
+  userInfo: object,
+  resetPW: boolean
+}
+
+interface Action {
+  type: ActionType,
+  payload?: any
+}
+
+export function user(state: InitState = initState, action: Action) {
   switch (action.type) {
-    case LOGIN_SUCCESS:
+    case ActionType.LOGIN_SUCCESS:
       return { ...state, userInfo: { ...state.userInfo, ...action.payload } }
-    case REGIST_SUCCESS:
+    case ActionType.REGIST_SUCCESS:
       return { ...state, userInfo: { ...state.userInfo, ...action.payload } }
-    case RESET_PW:
+    case ActionType.RESET_PW:
       return { ...state, resetPW: action.payload }
     default:
       return state
   }
 }
 
-const loginSuccess = data => ({ type: 'LOGIN_SUCCESS', payload: data })
-const registSuccess = data => ({ type: 'REGIST_SUCCESS', payload: data })
-const resetPW = data => ({ type: 'RESET_PW', payload: data })
+type Creator = (data: any) => { type: ActionType, payload: any }
+
+const loginSuccess: Creator = data => ({ type: ActionType.LOGIN_SUCCESS, payload: data })
+const registSuccess: Creator = data => ({ type: ActionType.REGIST_SUCCESS, payload: data })
+const resetPW: Creator = data => ({ type: ActionType.RESET_PW, payload: data })
+
+
+
+interface AuthParams {
+  userAccount: string
+  password: string
+  remember: boolean
+  userName: string
+  code: string
+}
 
 // 登录
-export const _login = ({ userAccount, password, remember }) => {
+
+export const _login = ({ userAccount, password, remember }: AuthParams) => {
   // 加密
-  let params = {
+  const params = {
     remember,
     userAccount: encrypt(userAccount),
     password: encrypt(password)
   }
 
-  return async dispatch => {
+  return async (dispatch: any) => {
     try {
-      const res = await login(params)
+      const res: any = await login(params)
       dispatch(loginSuccess(res.result))
     } catch (err) {
       if (err.code === 'U002') {
@@ -57,17 +82,16 @@ export const _login = ({ userAccount, password, remember }) => {
   }
 }
 
-// 注册
-export const _regist = ({ userAccount, userName, password, code }) => {
+export const _regist = ({ userAccount, userName, password, code }: AuthParams) => {
   const params = {
     code,
     userName,
     userAccount: encrypt(userAccount),
     password: encrypt(password)
   }
-  return async dispatch => {
+  return async (dispatch: any) => {
     try {
-      const res = await regist(params)
+      const res: any = await regist(params)
       dispatch(registSuccess(res.result))
     } catch (error) {
       message.error('注册失败！')
@@ -75,8 +99,8 @@ export const _regist = ({ userAccount, userName, password, code }) => {
   }
 }
 
-export const _resetPassword = ({ userAccount, password, code }) => {
-  return async dispatch => {
+export const _resetPassword = ({ userAccount, password, code }: AuthParams) => {
+  return async (dispatch: any) => {
     const params = {
       code,
       userAccount: encrypt(userAccount),
@@ -94,7 +118,7 @@ export const _resetPassword = ({ userAccount, password, code }) => {
 }
 
 // 验证手机号码是否存在
-export const _isExsitEmailOrUserNameOrTel = tel => async () => {
+export const _isExsitEmailOrUserNameOrTel = (tel: string) => async () => {
   try {
     const res = await isExsitEmailOrUserNameOrTel({ tel })
     return Promise.resolve(res)
@@ -104,7 +128,7 @@ export const _isExsitEmailOrUserNameOrTel = tel => async () => {
 }
 
 // 发送手机验证码
-export const _sendMessage = telNumber => async () => {
+export const _sendMessage = (telNumber: string) => async () => {
   try {
     await sendMessage({ telNumber })
   } catch (err) {
@@ -113,7 +137,7 @@ export const _sendMessage = telNumber => async () => {
 }
 
 // 验证手机验证码是否正确
-export const _verificatCode = ({ telNumber, code }) => async () => {
+export const _verificatCode = ({ telNumber, code }: { telNumber: string, code: string }) => async () => {
   try {
     const res = await verificatCode({ telNumber, code })
     return Promise.resolve(res)

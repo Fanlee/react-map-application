@@ -9,23 +9,23 @@ import useAuthValida from '@hook/useAuthValida'
 import useSendMSG from '@hook/useSendMSG'
 import styles from './style.module.sass'
 
-const Forget = (props: any) => {
+const Forget = ({form}: {form:any}) => {
   const dispatch = useDispatch()
   const resetPW = useSelector((state: any) => state.user.resetPW)
 
-  const { getFieldDecorator } = props.form
+  const { getFieldDecorator } = form
   const {
     validatePhoneNumber,
     compareToFirstPassword,
     validateToNextPassword,
     validateCode,
-  } = useAuthValida(props.form)
+  } = useAuthValida(form)
 
-  const { isSend, setSend, sendMsg } = useSendMSG(props.form)
+  const { isSend, setSend, sendMsg } = useSendMSG(form)
 
   const handleSubmit = (e: any) => {
     e.preventDefault()
-    props.form.validateFields((err: any, values: any) => {
+    form.validateFields((err: any, values: any) => {
       if (!err) {
         dispatch(_resetPassword(values))
       }

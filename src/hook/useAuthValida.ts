@@ -5,11 +5,13 @@ import {
   _verificatCode,
 } from '@redux/user.redux'
 
-const useAuthValida = (form) => {
+const useAuthValida = (form: any) => {
   const dispatch = useDispatch()
 
+  type ValidateFunc = (rule: any, value: string, callback: (text?: string) => {}) => void
+
   // 验证手机号码是否已经存在
-  const validatePhoneNumber = async (rule, value, callback) => {
+  const validatePhoneNumber: ValidateFunc = async (rule, value, callback) => {
     const reg = /^1(\d)\d{9}$/
     if (value && !reg.test(value)) {
       callback('手机号码格式不正确！')
@@ -27,7 +29,7 @@ const useAuthValida = (form) => {
     }
   }
   // 验证密码长度是否大于6
-  const compareToFirstPassword = (rule, value, callback) => {
+  const compareToFirstPassword: ValidateFunc = (rule, value, callback) => {
     if (value && value.length < 6) {
       callback('请输入6-20位密码！')
     } else {
@@ -36,7 +38,7 @@ const useAuthValida = (form) => {
   }
 
   // 验证两次输入的密码是否一致
-  const validateToNextPassword = (rule, value, callback) => {
+  const validateToNextPassword: ValidateFunc = (rule, value, callback) => {
     if (value && value !== form.getFieldValue('password')) {
       callback('两次填写的密码不一致！')
     } else {
@@ -45,7 +47,7 @@ const useAuthValida = (form) => {
   }
 
   // 验证输入的短信验证码是否正确
-  const validateCode = async (rule, code, callback) => {
+  const validateCode: ValidateFunc = async (rule, code, callback) => {
     if (code && code.length === 6) {
       const telNumber = form.getFieldValue('userAccount')
       try {
@@ -58,7 +60,7 @@ const useAuthValida = (form) => {
   }
 
   // 验证昵称
-  const validateUserName = (rule, value, callback) => {
+  const validateUserName: ValidateFunc = (rule, value, callback) => {
     const reg = /^[\u4e00-\u9fa5_a-zA-Z0-9]{2,10}$/
     if (value && !reg.test(value)) {
       callback('仅支持中文、英文、数字组成的2-10个字符！')
