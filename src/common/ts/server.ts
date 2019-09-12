@@ -1,7 +1,8 @@
 import axios from 'axios'
-// import { createBrowserHistory } from 'history'
+import { encryptConnect } from './util'
+import { createBrowserHistory } from 'history'
 
-export interface Data {
+interface Data {
   [p: string]: any
 }
 const param = (data: Data): string => {
@@ -13,14 +14,26 @@ const param = (data: Data): string => {
   return url ? url.substring(1) : ''
 }
 
-export interface AxiosConfig extends Data {
+interface AxiosConfig extends Data {
   url: string
 }
 // 拦截请求
 axios.interceptors.request.use((config: AxiosConfig): AxiosConfig => {
   const t = new Date().getTime()
-  const data = {
-    t
+  const token = localStorage.getItem('token')
+
+  let data = {}
+  // 需要ssm验证
+  if (token) {
+    let hmacMD5Parameter = {}
+
+    if (config.method === 'get') {
+      hmacMD5Parameter = config.params
+    }
+    const ssm = encryptConnect(t, token, hmacMD5Parameter)
+    data = { t, token, ssm }
+  } else {
+    data = { t }
   }
   config.url += (config.url.includes('?') ? '&' : '?') + param(data)
   return config
@@ -28,14 +41,14 @@ axios.interceptors.request.use((config: AxiosConfig): AxiosConfig => {
 
 // 拦截响应
 axios.interceptors.response.use((config): any => {
-  // const history = createBrowserHistory()
+  const history = createBrowserHistory()
   const { data } = config
   if (data.code === 'S001') {
     return Promise.resolve(data)
   }
   // U001是未登录，直接统一跳转到登录页面下，U002用户名密码错误 
   else if (data.code === 'U001') {
-    // history.push('/login')
+    history.push('/login')
   } else {
     return Promise.reject(data)
   }

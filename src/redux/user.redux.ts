@@ -1,5 +1,7 @@
 import { encrypt } from '@common/ts/util'
 import { message } from 'antd'
+import { createBrowserHistory } from 'history'
+
 import {
   login,
   regist,
@@ -12,17 +14,16 @@ import {
 enum ActionType {
   LOGIN_SUCCESS = 'LOGIN_SUCCESS',
   REGIST_SUCCESS = 'REGIST_SUCCESS',
-  RESET_PW = 'RESET_PW'
 }
 
 const initState = {
-  userInfo: {},
-  resetPW: false
+  userInfo: {}
 }
 
+const history = createBrowserHistory()
+
 interface InitState {
-  userInfo: object,
-  resetPW: boolean
+  userInfo: object
 }
 
 interface Action {
@@ -36,8 +37,6 @@ export function user(state: InitState = initState, action: Action) {
       return { ...state, userInfo: { ...state.userInfo, ...action.payload } }
     case ActionType.REGIST_SUCCESS:
       return { ...state, userInfo: { ...state.userInfo, ...action.payload } }
-    case ActionType.RESET_PW:
-      return { ...state, resetPW: action.payload }
     default:
       return state
   }
@@ -45,11 +44,8 @@ export function user(state: InitState = initState, action: Action) {
 
 type Creator = (data: any) => { type: ActionType, payload: any }
 
-const loginSuccess: Creator = data => ({ type: ActionType.LOGIN_SUCCESS, payload: data })
-const registSuccess: Creator = data => ({ type: ActionType.REGIST_SUCCESS, payload: data })
-const resetPW: Creator = data => ({ type: ActionType.RESET_PW, payload: data })
-
-
+export const loginSuccess: Creator = data => ({ type: ActionType.LOGIN_SUCCESS, payload: data })
+export const registSuccess: Creator = data => ({ type: ActionType.REGIST_SUCCESS, payload: data })
 
 interface AuthParams {
   userAccount: string
@@ -73,6 +69,8 @@ export const _login = ({ userAccount, password, remember }: AuthParams) => {
     try {
       const res: any = await login(params)
       dispatch(loginSuccess(res.result))
+      localStorage.setItem('token', res.result.token)
+      history.push('/menu')
     } catch (err) {
       if (err.code === 'U002') {
         return message.error('账号或密码错误！')
@@ -93,29 +91,30 @@ export const _regist = ({ userAccount, userName, password, code }: AuthParams) =
     try {
       const res: any = await regist(params)
       dispatch(registSuccess(res.result))
+      localStorage.setItem('token', res.result.token)
+      history.push('/menu')
     } catch (error) {
       message.error('注册失败！')
     }
   }
 }
 
-export const _resetPassword = ({ userAccount, password, code }: AuthParams) => {
-  return async (dispatch: any) => {
-    const params = {
-      code,
-      userAccount: encrypt(userAccount),
-      password: encrypt(password),
-      confirmKey: encrypt(userAccount)
-    }
-    try {
-      await resetPassword(params)
-      dispatch(resetPW(true))
-      message.success('密码重置成功！')
-    } catch (error) {
-      message.error('密码重置失败！')
-    }
+export const _resetPassword = ({ userAccount, password, code }: AuthParams) => async () => {
+  const params = {
+    code,
+    userAccount: encrypt(userAccount),
+    password: encrypt(password),
+    confirmKey: encrypt(userAccount)
+  }
+  try {
+    await resetPassword(params)
+    message.success('密码重置成功！')
+    history.push('/login')
+  } catch (error) {
+    message.error('密码重置失败！')
   }
 }
+
 
 // 验证手机号码是否存在
 export const _isExsitEmailOrUserNameOrTel = (tel: string) => async () => {

@@ -19,7 +19,7 @@ import * as serviceWorker from './serviceWorker';
 
 // 数据持久化配置
 const persistConfig = {
-  key: 'root',
+  key: 'user',
   storage,
   whitelist: ['user'] // 白名单
 }
