@@ -4,6 +4,7 @@ import Login from '@container/login/login'
 import Register from '@container/register/register'
 import Forget from '@container/forget/forget'
 import Menu from '@container/menu/menu'
+import Workbench from '@container/workbench/workbench'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/register" component={Register} />
         <Route path="/forget" component={Forget} />
         <Route path="/menu" component={Menu} />
+        <Route path="/workbench" component={Workbench} />
       </Switch>
     </div>
   )

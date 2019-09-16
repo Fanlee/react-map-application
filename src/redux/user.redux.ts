@@ -92,7 +92,7 @@ export const _regist = ({ userAccount, userName, password, code }: AuthParams) =
       const res: any = await regist(params)
       dispatch(registSuccess(res.result))
       localStorage.setItem('token', res.result.token)
-      history.push('/menu')
+      history.push('/workbench')
     } catch (error) {
       message.error('注册失败！')
     }
