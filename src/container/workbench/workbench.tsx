@@ -6,6 +6,8 @@ import MapList from '@container/map-list/map-list'
 import Team from '@container/team/team'
 import MapCase from '@container/map-case/map-case'
 import Setting from '@container/setting/setting'
+import UserCenter from '@container/user-center/user-center'
+import WorkbenchHeader from '@component/workbench-header/workbench-header'
 import styles from './style.module.sass'
 
 const { Header, Content, Sider } = Layout
@@ -45,7 +47,9 @@ const Workbench = (props: any) => {
         </Menu>
       </Sider>
       <Layout>
-        <Header className={styles.header} />
+        <Header className={styles.header} >
+          <WorkbenchHeader />
+        </Header>
         <Content className={styles.content}>
           <Route exact={true} path={`${match.url}`} component={Homepage} />
           <Route path={`${match.url}/homepage`} component={Homepage} />
@@ -53,6 +57,7 @@ const Workbench = (props: any) => {
           <Route path={`${match.url}/team`} component={Team} />
           <Route path={`${match.url}/mapcase`} component={MapCase} />
           <Route path={`${match.url}/setting`} component={Setting} />
+          <Route path={`${match.url}/usercenter`} component={UserCenter} />
         </Content>
       </Layout>
     </Layout>

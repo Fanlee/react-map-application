@@ -14,6 +14,7 @@ import {
 enum ActionType {
   LOGIN_SUCCESS = 'LOGIN_SUCCESS',
   REGIST_SUCCESS = 'REGIST_SUCCESS',
+  LOGOUT = 'LOGOUT'
 }
 
 const initState = {
@@ -37,15 +38,21 @@ export function user(state: InitState = initState, action: Action) {
       return { ...state, userInfo: { ...state.userInfo, ...action.payload } }
     case ActionType.REGIST_SUCCESS:
       return { ...state, userInfo: { ...state.userInfo, ...action.payload } }
+    case ActionType.LOGOUT:
+      return { ...state, userInfo: {} }
     default:
       return state
   }
 }
 
-type Creator = (data: any) => { type: ActionType, payload: any }
+type Creator = (data?: any) => { type: ActionType, payload?: any }
 
 export const loginSuccess: Creator = data => ({ type: ActionType.LOGIN_SUCCESS, payload: data })
 export const registSuccess: Creator = data => ({ type: ActionType.REGIST_SUCCESS, payload: data })
+export const logout: Creator = () => {
+  localStorage.removeItem('token')
+  return { type: ActionType.LOGOUT }
+}
 
 interface AuthParams {
   userAccount: string
@@ -56,7 +63,6 @@ interface AuthParams {
 }
 
 // 登录
-
 export const _login = ({ userAccount, password, remember }: AuthParams) => {
   // 加密
   const params = {
