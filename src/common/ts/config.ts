@@ -15,3 +15,4 @@ urls.server = protocal + urls.ip + '/saas/'
 urls.platform = urls.server + 'platform/'
 
 export { urls }
+
