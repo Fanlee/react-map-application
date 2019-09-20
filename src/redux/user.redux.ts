@@ -49,10 +49,7 @@ type Creator = (data?: any) => { type: ActionType, payload?: any }
 
 export const loginSuccess: Creator = data => ({ type: ActionType.LOGIN_SUCCESS, payload: data })
 export const registSuccess: Creator = data => ({ type: ActionType.REGIST_SUCCESS, payload: data })
-export const logout: Creator = () => {
-  localStorage.removeItem('token')
-  return { type: ActionType.LOGOUT }
-}
+export const logout: Creator = () => ({ type: ActionType.LOGOUT })
 
 interface AuthParams {
   userAccount: string
@@ -76,7 +73,6 @@ export const _login = ({ userAccount, password, remember }: AuthParams) => {
       const res: any = await login(params)
       dispatch(loginSuccess(res.result))
       localStorage.setItem('token', res.result.token)
-      history.push('/protected')
     } catch (err) {
       if (err.code === 'U002') {
         return message.error('账号或密码错误！')
@@ -98,7 +94,6 @@ export const _regist = ({ userAccount, userName, password, code }: AuthParams) =
       const res: any = await regist(params)
       dispatch(registSuccess(res.result))
       localStorage.setItem('token', res.result.token)
-      history.push('/workbench')
     } catch (error) {
       message.error('注册失败！')
     }

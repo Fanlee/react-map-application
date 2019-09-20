@@ -15,7 +15,7 @@ function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/forget" component={Forget} />
-        <PrivateRoute path="/protected" component={Workbench} />
+        <PrivateRoute path="/workbench" component={Workbench} />
         <Route component={NoMatch} />
       </Switch>
     </div>

@@ -11,6 +11,7 @@ const WorkbenchHeader = React.memo(() => {
   const dispatch = useDispatch()
   const handleClick = ({ key }: { key: string }) => {
     if (key === 'logout') {
+      localStorage.removeItem('token')
       dispatch(logout())
     }
   }
