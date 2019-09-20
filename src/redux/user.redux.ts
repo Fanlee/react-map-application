@@ -76,7 +76,7 @@ export const _login = ({ userAccount, password, remember }: AuthParams) => {
       const res: any = await login(params)
       dispatch(loginSuccess(res.result))
       localStorage.setItem('token', res.result.token)
-      history.push('/menu')
+      history.push('/protected')
     } catch (err) {
       if (err.code === 'U002') {
         return message.error('账号或密码错误！')
