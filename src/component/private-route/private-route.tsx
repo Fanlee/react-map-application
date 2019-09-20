@@ -4,15 +4,12 @@ import { useSelector } from 'react-redux'
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
   const token = useSelector((state: any) => state.user.userInfo.token)
-  console.log(rest)
+
   return (
     <Route
       {...rest}
-      render={props => {
-        console.log('props', props)
-        return token ? <Component {...props} /> : <Redirect to="/login" />
-      }
-        
+      render={props =>
+        token ? <Component {...props} /> : <Redirect to="/login" />
       } />
   )
 }
