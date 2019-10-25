@@ -52,6 +52,15 @@ const UserCenter = ({ form }: any) => {
             ],
           })(<Input placeholder="请输入手机号" />)}
         </Form.Item>
+        <Form.Item label="电话" {...formItemLayout}>
+          {getFieldDecorator('telNum', {
+            initialValue: userInfo.telNum,
+            rules: [
+              { required: true, message: '请输入电话号码！' },
+              { validator: validatePhoneNumber }
+            ],
+          })(<Input placeholder="请输入手机号" />)}
+        </Form.Item> 
         <Form.Item label="邮箱" {...formItemLayout}>
           {getFieldDecorator('mailbox', {
             initialValue: userInfo.mailbox,
